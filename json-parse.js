@@ -63,21 +63,21 @@ function addAnotherBuilding() {
     });
 }
 
-
-
-
-
 function calculateCost() {
     var aleSlate = parseFloat(document.querySelector('.aleSlate').value) / 100;
     var aleMarble = parseFloat(document.querySelector('.aleMarble').value) / 100;
     var aleKeystone = parseFloat(document.querySelector('.aleKeystone').value) / 100;
     var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-    var totalDiscounts = { slate: 0, marble: 0, keystone: 0 }; // Kokonaisalennukset
-    var totalStatsList = []; // Kerää statsit listaan
+    var totalDiscounts = { slate: 0, marble: 0, keystone: 0 };
+    var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary'); 
     var numberFormatter = new Intl.NumberFormat('en-US');
 
-    costSummaryElement.innerHTML = '';
+    // Lisää huomautukset Valyrian Stonen puuttumisesta ja alennusprosentin epätarkkuudesta
+    costSummaryElement.innerHTML = `
+        <p>Please note that the calculation for Valyrian Stone is missing, as it is not defined in the price list.</p>
+        ${aleMarble > 0 || aleKeystone > 0 ? `<p>Note: Discount percentages may not accurately reflect in-game calculations due to a known bug.</p>` : ''}
+    `;
 
     var buildingBlocks = document.querySelectorAll('.buildingBlock');
     for (let i = 0; i < buildingBlocks.length; i++) {
@@ -89,9 +89,8 @@ function calculateCost() {
         let targetLevel = parseInt(targetLevelInput.value);
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-        var blockCostsBeforeDiscount = { ...blockCosts };
 
-        for (let j = currentLevel; j < targetLevel; j++) {
+        for (let j = currentLevel - 1; j < targetLevel - 1; j++) {
             blockCosts.slate += selectedPrice[j].Slate;
             blockCosts.marble += selectedPrice[j].Marble;
             blockCosts.brick += selectedPrice[j].Brick;
@@ -102,15 +101,10 @@ function calculateCost() {
         // Laske alennukset ja päivitä kokonaisalennukset
         var blockDiscounts = { slate: 0, marble: 0, keystone: 0 };
         for (let key in blockCosts) {
-            blockCostsBeforeDiscount[key] = blockCosts[key];
-            if (key === 'marble') {
-                blockDiscounts.marble = blockCosts[key] * aleMarble;
-                blockCosts[key] -= blockDiscounts.marble;
-            }
-            if (key === 'keystone') {
-                blockDiscounts.keystone = blockCosts[key] * aleKeystone;
-                blockCosts[key] -= blockDiscounts.keystone;
-            }
+            let originalCost = blockCosts[key];
+            let discount = key === 'marble' ? aleMarble : (key === 'keystone' ? aleKeystone : 0);
+            blockDiscounts[key] = Math.round(originalCost * discount);
+            blockCosts[key] = Math.round(originalCost - blockDiscounts[key]);
             totalCosts[key] += blockCosts[key];
             totalDiscounts[key] += blockDiscounts[key];
         }
@@ -120,7 +114,7 @@ function calculateCost() {
         var buildingText = block.querySelector('.buildingSelect').options[block.querySelector('.buildingSelect').selectedIndex].text;
 
         // Tallenna statsit listalle
-        totalStatsList.push(enhancementText + " +" + stats.toFixed(2) + "%");
+        totalStatsList.push(`${enhancementText} +${stats.toFixed(2)}%`);
 
         var blockCostDiv = document.createElement('div');
         blockCostDiv.classList.add('costBox');
