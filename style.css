@@ -25,6 +25,13 @@ label {
 	font-weight: bold;
 }
 
+#costSummary > p {
+    margin-bottom: 5px;
+    margin-top: 0px;
+    font-style: italic;
+    color: #f45656;
+}
+
 select, input[type="number"] {
 	width: 100%;
 	padding: 8px;
