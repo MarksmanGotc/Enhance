@@ -5,83 +5,73 @@ let build = {
         "Infantry Defense vs. Player's Cavalry": "PriceLow"
     },
     "Range": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Ranged Attack vs. Player": "PriceMedium",
+        "Ranged Defense vs. Player's Infantry": "PriceLow",
+        "Ranged Defense vs. Player's Cavalry": "PriceLow"
     },
     "Stable": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Cavalry Attack vs. Player": "PriceMedium",
+        "Cavalry Defense vs. Player's Infantry": "PriceLow",
+        "Cavalry Defense vs. Player's Ranged": "PriceLow"
     },
 	"Workshop": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceMedium"
+        "Siege Attack vs Player's Troops": "PriceMedium",
+        "Siege Defense vs Player's Troops": "PriceMedium",
+        "Siege Health vs Player's Troops": "PriceMedium"
     },
 	"Wall": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceMedium"
+        "Infantry Defense vs. Player": "PriceMedium",
+        "Ranged Defense vs. Player": "PriceMedium",
+        "Cavalry Defense vs. Player": "PriceMedium"
     },
 	"Shrine": {
-        "Def": "PriceHigh",
-        "Enhancement2": "PriceHigh",
-        "Enhancement3": "PriceMedium"
+        "Troop Health vs. Player": "PriceHigh",
+        "March Speed vs. Seat of Power": "PriceHigh",
+        "Troop Defence vs. Player": "PriceMedium"
     },
 	"Training yard": {
-        "Enhancement1": "PriceLow",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Infantry Defense vs. Player's Infantry": "PriceLow",
+        "Ranged Defense vs. Player's Ranged": "PriceLow",
+        "Cavalry Defense vs. Player's Cavalry": "PriceLow"
     },
 	"Great hall": {
-        "Enhancement1": "PriceLow",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Infantry Attack vs. Player's Infantry": "PriceLow",
+        "Ranged Attack vs. Player's Ranged": "PriceLow",
+        "Cavalry Attack vs. Player's Cavalry": "PriceLow"
     },
 	"Storehouse": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceMedium"
+        "Infantry Health vs. Player": "PriceMedium",
+        "Ranged Health vs. Player": "PriceMedium",
+        "Cavalry Health vs. Player": "PriceMedium"
     },
 	"Smith": {
-        "Enhancement1": "PriceLow",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Infantry Attack vs. Player's Cavalry": "PriceLow",
+        "Ranged Attack vs. Player's Infantry": "PriceLow",
+        "Cavalry Attack vs. Player's Ranged": "PriceLow"
     },
 	"Rookery": {
-        "Enhancement1": "PriceLow",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "Infantry Attack vs. Player's Ranged": "PriceLow",
+        "Ranged Attack vs. Player's Cavalry": "PriceLow",
+        "Cavalry Attack vs. Player's Infantry": "PriceLow"
     },
 	"Master's tower": {
-        "Enhancement1": "PriceHigh",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceLow"
-    },
-	"Masters tower": {
-        "Enhancement1": "PriceHigh",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceLow"
+        "Troop Attack vs. Player": "PriceHigh",
+        "Wall Damage Bonus": "PriceMedium",
+        "March Speed vs. Recources": "PriceLow"
     },
 	"Watchtower": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceLow",
-        "Enhancement3": "PriceLow"
+        "March Speed": "PriceMedium",
+        "March Speed Reinforcing": "PriceLow",
+        "March Speed vs. Creatures": "PriceLow"
     },
 	"Keep": {
-        "Enhancement1": "PriceHigh",
-        "Enhancement2": "PriceHigh",
-        "Enhancement3": "PriceHigh"
+        "Troop Attack": "PriceHigh",
+        "Troop Defence": "PriceHigh",
+        "Troop Health": "PriceHigh"
     },
 	"Dragon pit": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceMedium"
-    },
-	"Dragon": {
-        "Enhancement1": "PriceMedium",
-        "Enhancement2": "PriceMedium",
-        "Enhancement3": "PriceMedium"
+        "Dragon: Troop Attack at a Seat of Power": "PriceMedium2",
+        "Dragon: Troop Defence at a Seat of Power": "PriceMedium2",
+        "Dragon: Troop Health at a Seat of Power": "PriceMedium2"
     }
 }
