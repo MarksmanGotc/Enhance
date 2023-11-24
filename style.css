@@ -107,10 +107,6 @@ button:hover {
 	}
 }
 
-.totalCosts {
-    font-size: larger;
-}
-
 .buildingBlock > div {
     display: flex;
     gap: 20px;
@@ -173,7 +169,9 @@ p.stats {
 }
 
 .costBox span, .totalCosts span {
-    font-size: 14px;
+	font-size: 14px;
+	margin-top: -10px;
+	display: block;
 }
 
 @media (max-width: 500px) {
