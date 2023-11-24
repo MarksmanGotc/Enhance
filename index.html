@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Enhance calculator</title>
+	<link rel="stylesheet" href="style.css">
+    <script type="text/javascript" src="build.js"></script>
+    <script type="text/javascript" src="price.js"></script>
+    <script type="text/javascript" src="json-parse.js"></script>
+</head>
+<body>
+	<div class="wrapper">
+		<h1>Enhance calculator</h1>
+
+		<div class="buildingBlock">
+			<div class="selectBuilds">
+				<div class="selectBuild">
+					<label for="buildingSelect">Select Building:</label>
+					<select class="buildingSelect">
+					</select>
+				</div>
+				<div class="selectEnhance">
+					<label for="enhancementSelect">Select Enhancement:</label>
+					<select class="enhancementSelect">
+					</select>
+				</div>
+			</div>
+
+			<div class="selectLevel">
+				<div class="currentLevel">
+					<label for="currentLevel">Current level:</label>
+					<input type="number" class="currentLevel" min="1" max="35" value="1">
+				</div>
+				<div class="targetLevel">
+					<label for="targetLevel">Update level:</label>
+					<input type="number" class="targetLevel" min="1" max="35" value="35">
+				</div>
+			</div>
+		</div>
+		
+		<div id="buildingBlocksContainer"></div>
+		
+		<div class="yourBoost">
+			<h3>Cost Efficiency</h3>
+			<div class="lowerMarble">
+				<label for="aleMarble">Marble:</label>
+				<input type="number" class="aleMarble" min="0" value="0">
+			</div>
+			
+			<div class="lowerSlate">
+				<label for="aleSlate">Slate:</label>
+				<input type="number" class="aleSlate" min="0" value="0">
+			</div>
+
+			<div class="lowerKeystone">
+				<label for="aleKeystone">Keystone:</label>
+				<input type="number" class="aleKeystone" min="0" value="0">
+			</div>
+			
+		</div>
+
+		<div class="buttons">
+			<button onclick="addAnotherBuilding()">+ Add next building</button>
+			
+			<button onclick="calculateCost()">Calculate</button>
+		</div>
+
+		
+		<div id="costSummary"></div>
+		
+	<div>
+</body>
+</html>
