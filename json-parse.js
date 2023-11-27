@@ -144,6 +144,7 @@ function calculateCost() {
         blockCostDiv.classList.add('costBox');
         blockCostDiv.innerHTML = `
             <h4>${buildingText} - ${enhancementText}</h4>
+	    <p class="level">Level ${currentLevel} to ${targetLevel}</p>
             <p class="stats">Stats increase: ${stats.toFixed(2)}%</p>
         `;
 
