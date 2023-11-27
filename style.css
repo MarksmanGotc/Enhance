@@ -143,7 +143,6 @@ p.stats {
 .costBox span, .totalCosts span {
 	font-size: 14px;
 	display: block;
-	margin-top: -12px;
 }
 footer {
 	margin-top: auto;
