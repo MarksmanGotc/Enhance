@@ -61,9 +61,10 @@ function addAnotherBuilding() {
     var container = document.getElementById('buildingBlocksContainer');
     container.appendChild(newBuildingDiv);
 
-    // Korostusanimatio ja vieritys
-    setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
-    newBuildingDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+	
+    //setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
+    //newBuildingDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     var newBuildingSelect = newBuildingDiv.querySelector('.buildingSelect');
     var newEnhancementSelect = newBuildingDiv.querySelector('.enhancementSelect');
@@ -72,6 +73,15 @@ function addAnotherBuilding() {
     newBuildingSelect.addEventListener('change', function() {
         loadEnhancements(newEnhancementSelect);
     });
+	
+	
+	var scrollTargetPosition = document.querySelector('.buttons').offsetTop + document.querySelector('.buttons').clientHeight
+	window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
+
+	newBuildingDiv.classList.add('animated');
+	setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
+    
+	
 }
 
 
