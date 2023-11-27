@@ -2,18 +2,17 @@ body {
 	font-family: Arial, sans-serif;
 	background-color: #f4f4f4;
 	margin: 0;
-    padding: 0;
+	padding: 0;
 	color: #333;
 	display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+	min-height: 100vh;
+	flex-direction: column;
 }
 .wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 25px 10px 40px 10px;
+	max-width: 600px;
+	margin: 0 auto;
+	padding: 25px 10px 40px 10px;
 }
-
 h1 {
 	color: #5D1049;
 	text-align: center;
@@ -26,7 +25,6 @@ label {
 	display: block;
 	font-weight: bold;
 }
-
 select, input[type="number"] {
 	width: 100%;
 	padding: 8px;
@@ -36,13 +34,12 @@ select, input[type="number"] {
 	box-sizing: border-box;
 }
 .buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    align-items: center;
-    margin: 0 auto;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 0 auto;
 }
-
 button {
 	background-color: #4CAF50;
 	color: white;
@@ -55,168 +52,150 @@ button {
 	margin-top: 15px;
 	flex: 1 1 100%;
 }
-
 button:hover {
 	background-color: #45a049;
 }
-
 .totalCount {
 	background-color: #e2e2e2;
 	padding: 15px;
 	margin-top: 20px;
 	border-radius: 5px;
 }
-
 .totalCount p {
 	margin: 5px 0;
 }
-
 .costsContainer {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px; /* Väli boksien välillä */
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	/* Väli boksien välillä */
 }
-
 #costSummary{
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-top: 20px;
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;
+	margin-top: 20px;
 }
-
 .costBox {
-    border: 1px solid #ccc;
-    padding: 10px;
-    flex: 1 1 15%;
-    box-sizing: border-box;
+	border: 1px solid #ccc;
+	padding: 10px;
+	flex: 1 1 15%;
+	box-sizing: border-box;
 }
-
 .costBox h4 {
-    margin-top: 0;
+	margin-top: 0;
 }
-
 /* Mobiilinäkymä, boksit allekkain */
 @media (max-width: 600px) {
-    .costBox {
-        flex: 1 1 40%;
+	.costBox {
+		flex: 1 1 40%;
 	}
 }
-
 .totalCosts {
-    font-size: larger;
+	font-size: larger;
 }
-
 .buildingBlock > div {
-    display: flex;
-    gap: 20px;
+	display: flex;
+	gap: 20px;
 	justify-content: center;
-    flex-wrap: wrap;
+	flex-wrap: wrap;
 }
-
 .buildingBlock > div > div {
-    flex: 1 1 40%;
+	flex: 1 1 40%;
 }
-
 div#buildingBlocksContainer .buildingBlock {
-    border-top: 1px solid #dadada;
-    margin-top: 20px;
-    padding-top: 10px;
+	border-top: 1px solid #dadada;
+	margin-top: 20px;
+	padding-top: 10px;
 }
-
 .yourBoost {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 10px;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 10px;
 }
-
 .yourBoost h3 {
-    width: 100%;
-    margin-bottom: -10px;
+	width: 100%;
+	margin-bottom: -10px;
 }
-
 .yourBoost > div {
-    flex: 1;
-    min-width: 100px; /* Asettaa minimileveyden jokaiselle alaosalle */
+	flex: 1;
+	min-width: 100px;
+	/* Asettaa minimileveyden jokaiselle alaosalle */
 }
-
-
 .selectBuild, .selectEnhance, .currentLevel, .updateLevel, .lowerMarble, .lowerSlate, .lowerKeystone {
-    flex: 1;
+	flex: 1;
 }
-
 .totalCosts {
-    border: 1px solid #ccc;
-    padding: 10px;
-    flex: 100%;
-    box-sizing: border-box;
+	border: 1px solid #ccc;
+	padding: 10px;
+	flex: 100%;
+	box-sizing: border-box;
 }
-
 .totalCosts h3 {
-    margin-top: 0px;
-    font-size: 20px;
+	margin-top: 0px;
+	font-size: 20px;
 }
-
 p.stats {
-    color: #4caf50;
-}0
-
+	color: #4caf50;
+}
 .totalCosts p, .costBox p {
-    margin-bottom: 0;
-    margin-top: 10px;
-    font-size: 16px;
+	margin-bottom: 0;
+	margin-top: 10px;
+	font-size: 16px;
 }
-
+#costSummary > p {
+	color: #e72323;
+	font-style: italic;
+	margin: 0;
+}
 .costBox span, .totalCosts span {
-    font-size: 14px;
+	font-size: 14px;
+	display: block;
+	margin-top: -12px;
 }
-
 footer {
-    margin-top: auto;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+	margin-top: auto;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	display: flex;
+	justify-content: center;
 	padding-top: 10px;
 	background: #e5e5e5;
 }
-
 footer div {
-    width: 600px;
+	width: 600px;
 }
-
 footer p {
-    margin-bottom: 5px;
-    margin-top: 0px;
-    font-style: italic;
+	margin-bottom: 5px;
+	margin-top: 0px;
+	font-style: italic;
 }
-
 @media (max-width: 600px) {
 	footer div {
 		width: max-content;
 	}
 }
-
 @media (max-width: 500px) {
-    .selectBuilds, .yourBoost {
-        flex-direction: column;
-    }
+	.selectBuilds, .yourBoost {
+		flex-direction: column;
+	}
 	.yourBoost > div {
-        flex-basis: 100%; /* Asettaa jokaisen alaosan täyttämään koko rivin leveyden */
-    }
+		flex-basis: 100%;
+		/* Asettaa jokaisen alaosan täyttämään koko rivin leveyden */
+	}
 	.buildingBlock > div {
 		column-gap: 20px;
 		row-gap: 10px
-	}
-
+}
 	.selectLevel {
 		padding-top: 10px;
 	}
-    .selectBuild, .selectEnhance, .currentLevel, .updateLevel, .lowerMarble, .lowerSlate, .lowerKeystone {
-        width: 100%;
-    }
+	.selectBuild, .selectEnhance, .currentLevel, .updateLevel, .lowerMarble, .lowerSlate, .lowerKeystone {
+		width: 100%;
+	}
 	.costBox {
-        flex: 1 1 100%;
+		flex: 1 1 100%;
 	}
 }
