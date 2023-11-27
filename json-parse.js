@@ -75,7 +75,7 @@ function addAnotherBuilding() {
     });
 	
 	
-	var scrollTargetPosition = document.querySelector('.buttons').offsetTop + document.querySelector('.buttons').clientHeight
+	var scrollTargetPosition = document.querySelector('.buildingBlock.animated').offsetTop - 20;
 	window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
 
 	newBuildingDiv.classList.add('animated');
