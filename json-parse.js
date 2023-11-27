@@ -26,8 +26,15 @@ function loadEnhancements(enhancementSelect) {
 }
 
 function addAnotherBuilding() {
+	document.querySelectorAll('.buildingBlock.start').forEach(function(element) {
+        element.classList.remove('start');
+    });
+	document.querySelectorAll('.buildingBlock.animated').forEach(function(element) {
+        element.classList.remove('animated');
+    });
     var newBuildingDiv = document.createElement('div');
-    newBuildingDiv.className = 'buildingBlock';
+    newBuildingDiv.className = 'buildingBlock animated';
+	
 
     newBuildingDiv.innerHTML = `
         <div class="selectBuilds">
@@ -51,8 +58,12 @@ function addAnotherBuilding() {
             </div>
         </div>`;
 
-    var container = document.getElementById('buildingBlocksContainer'); // Oletetaan, että tämä on kontti, johon uudet lohkot lisätään
+    var container = document.getElementById('buildingBlocksContainer');
     container.appendChild(newBuildingDiv);
+
+    // Korostusanimatio ja vieritys
+    setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
+    newBuildingDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     var newBuildingSelect = newBuildingDiv.querySelector('.buildingSelect');
     var newEnhancementSelect = newBuildingDiv.querySelector('.enhancementSelect');
@@ -63,6 +74,7 @@ function addAnotherBuilding() {
     });
 }
 
+
 function calculateCost() {
     var aleSlate = parseFloat(document.querySelector('.aleSlate').value) / 100;
     var aleMarble = parseFloat(document.querySelector('.aleMarble').value) / 100;
@@ -70,14 +82,16 @@ function calculateCost() {
     var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
     var totalDiscounts = { slate: 0, marble: 0, keystone: 0 };
     var totalStatsList = [];
-    var costSummaryElement = document.getElementById('costSummary'); 
+    var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
+	
 
     // Lisää huomautukset Valyrian Stonen puuttumisesta ja alennusprosentin epätarkkuudesta
     costSummaryElement.innerHTML = `
         <p>Please note that the calculation for Valyrian Stone is missing, as it is not defined in the price list.</p>
         ${aleMarble > 0 || aleKeystone > 0 ? `<p>Note: Discount percentages may not accurately reflect in-game calculations due to a known bug.</p>` : ''}
     `;
+	
 
     var buildingBlocks = document.querySelectorAll('.buildingBlock');
     for (let i = 0; i < buildingBlocks.length; i++) {
@@ -151,6 +165,8 @@ function calculateCost() {
             `;
         }
         costSummaryElement.appendChild(totalCostDiv);
+		
+		smoothScrollTo('costSummary');
     }
 }
 
@@ -174,3 +190,29 @@ document.addEventListener('DOMContentLoaded', function() {
 		});
 	});
 });
+
+
+function smoothScrollTo(elementId) {
+    const targetElement = document.getElementById(elementId);
+    if (!targetElement) return;
+
+    const targetPosition = targetElement.offsetTop;
+    const startPosition = window.pageYOffset;
+    const distance = targetPosition - startPosition;
+    const duration = 500;
+    let start = null;
+
+    window.requestAnimationFrame(step);
+
+    function step(timestamp) {
+        if (!start) start = timestamp;
+        const progress = timestamp - start;
+        const fraction = easeInOutCubic(progress / duration);
+        window.scrollTo(0, startPosition + distance * fraction);
+        if (progress < duration) window.requestAnimationFrame(step);
+    }
+
+    function easeInOutCubic(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    }
+}
