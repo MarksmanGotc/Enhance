@@ -85,15 +85,6 @@ button:hover {
 .costBox h4 {
 	margin-top: 0;
 }
-/* Mobiilinäkymä, boksit allekkain */
-@media (max-width: 600px) {
-	.costBox {
-		flex: 1 1 40%;
-	}
-}
-.totalCosts {
-	font-size: larger;
-}
 .buildingBlock > div {
 	display: flex;
 	gap: 20px;
@@ -176,7 +167,11 @@ footer p {
 	footer div {
 		width: max-content;
 	}
+	.costBox {
+		flex: 1 1 40%;
+	}
 }
+
 @media (max-width: 500px) {
 	.selectBuilds, .yourBoost {
 		flex-direction: column;
@@ -188,7 +183,7 @@ footer p {
 	.buildingBlock > div {
 		column-gap: 20px;
 		row-gap: 10px
-}
+	}
 	.selectLevel {
 		padding-top: 10px;
 	}
