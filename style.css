@@ -1,22 +1,24 @@
 body {
 	font-family: Arial, sans-serif;
-	background-color: #f4f4f4;
+	background-color: #f3f3f9;
 	margin: 0;
-    padding: 0;
+	padding: 0;
 	color: #333;
 	display: flex;
-    min-height: 100vh;
-    flex-direction: column;
+	min-height: 100vh;
+	flex-direction: column;
 }
 .wrapper {
     max-width: 600px;
     margin: 0 auto;
-    padding: 25px 10px 40px 10px;
+    padding: 25px 20px 40px 20px;
+    background: #fff;
 }
 
 h1 {
 	color: #5D1049;
 	text-align: center;
+	margin-top: 0;
 }
 .none {
 	display: none;
@@ -89,6 +91,7 @@ button:hover {
     padding: 10px;
     flex: 1 1 24%;
     box-sizing: border-box;
+    box-shadow: 0px 2px 10px 0px #c5c5c5;
 }
 
 .costBox h4 {
@@ -154,6 +157,7 @@ div#buildingBlocksContainer .buildingBlock:last-child, .buildingBlock.start  {
     padding: 10px;
     flex: 100%;
     box-sizing: border-box;
+    box-shadow: 0px 2px 10px 0px #c5c5c5;
 }
 
 .totalCosts h3 {
@@ -246,4 +250,3 @@ footer p {
         border-bottom: 1px solid #c55252;
     }
 }
-
