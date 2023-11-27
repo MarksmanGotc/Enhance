@@ -90,7 +90,7 @@ function calculateCost() {
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
 
-        for (let j = currentLevel - 1; j < targetLevel - 1; j++) {
+        for (let j = currentLevel; j < targetLevel; j++) {
             blockCosts.slate += selectedPrice[j].Slate;
             blockCosts.marble += selectedPrice[j].Marble;
             blockCosts.brick += selectedPrice[j].Brick;
