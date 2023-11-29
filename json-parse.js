@@ -93,7 +93,7 @@ function calculateCost() {
     var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
-	
+	var calculationDetails = [];
 
     // Lisää huomautukset Valyrian Stonen puuttumisesta ja alennusprosentin epätarkkuudesta
     costSummaryElement.innerHTML = `
@@ -112,7 +112,8 @@ function calculateCost() {
         let targetLevel = parseInt(targetLevelInput.value);
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-
+	
+		
         for (let j = currentLevel; j < targetLevel; j++) {
             blockCosts.slate += selectedPrice[j].Slate;
             blockCosts.marble += selectedPrice[j].Marble;
@@ -130,6 +131,7 @@ function calculateCost() {
             blockCosts[key] = Math.round(originalCost - blockDiscounts[key]);
             totalCosts[key] += blockCosts[key];
             totalDiscounts[key] += blockDiscounts[key];
+			
         }
 
         var stats = selectedPrice[targetLevel - 1].Value - selectedPrice[currentLevel - 1].Value;
@@ -146,6 +148,7 @@ function calculateCost() {
 	    <p class="level">Level ${currentLevel} to ${targetLevel}</p>
             <p class="stats">Stats increase: ${stats.toFixed(2)}%</p>
         `;
+		calculationDetails.push(`${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`);
 
         // Lisää kustannukset ja alennukset costBoxiin
         for (let key in blockCosts) {
@@ -174,19 +177,16 @@ function calculateCost() {
                 ${totalDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(totalDiscounts[key])}</span>` : ''}
             `;
         }
-		gtag('event', 'calculate_click', {
+		gtag('event', 'calculate', {
 			'event_category': 'Calculation Actions',
-			'event_label': 'Calculate Cost'
+			'event_label': 'Calculation Details',
+			'event_value': calculationDetails.join(' | ')
 		});
 
         costSummaryElement.appendChild(totalCostDiv);
 		smoothScrollTo('costSummary');
     }
 }
-
-
-
-
 
 // Kutsu funktioita sivun latautuessa
 document.addEventListener('DOMContentLoaded', function() {
