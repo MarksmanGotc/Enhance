@@ -211,6 +211,59 @@ footer p {
 	animation-iteration-count: 2;
 }
 
+.cookie-banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	background-color: #f2f2f2;
+	padding: 30px 0;
+	text-align: center;
+	box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.2);
+	display: none; /* Oletuksena piilotettu */
+}
+.cookie-buttons {
+    margin: 0 auto;
+    display: inline-flex;
+}
+
+.cookie-message {
+	margin-bottom: 10px;
+	font-size: 14px;
+	padding: 0px 30px;
+}
+
+.cookie-buttons button {
+	padding: 10px 15px;
+	margin: 0 5px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	font-size: 14px;
+	transition: background-color 0.3s ease;
+}
+
+.btn-accept {
+	background-color: #4CAF50;
+	color: white;
+	font-weight: bold;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn-accept:hover {
+	background-color: #45a049;
+}
+
+.btn-decline {
+	background-color: #f44336;
+	color: white;
+	opacity: 0.7;
+}
+
+.btn-decline:hover {
+	background-color: #e53935;
+	opacity: 1;
+}
 @media (max-width: 600px) {
 	footer div {
 		width: max-content;
