@@ -31,5 +31,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// Näytä evästebanneri uudelleen
 		document.getElementById("cookieConsentBanner").style.display = "block";
+		gtag('event', 'cookie_settings_click', {
+			'event_category': 'Cookie Actions',
+			'event_label': 'Open cookie prompt'
+		});
+
 	});
 });
