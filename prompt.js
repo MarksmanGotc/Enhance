@@ -24,4 +24,12 @@ document.addEventListener("DOMContentLoaded", function() {
         cookieBanner.style.display = "none";
         window['ga-disable-G-0LX7SEF348'] = true;
     });
+	
+	document.getElementById("changeCookieSettings").addEventListener("click", function() {
+		// Poista aiempi suostumus localStoragesta
+		localStorage.removeItem("cookieConsent");
+
+		// Näytä evästebanneri uudelleen
+		document.getElementById("cookieConsentBanner").style.display = "block";
+	});
 });
