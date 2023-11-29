@@ -264,6 +264,12 @@ footer p {
 	background-color: #e53935;
 	opacity: 1;
 }
+.cookie-settings{
+	margin-top: 20px;
+	cursor: pointer;
+	
+}
+
 @media (max-width: 600px) {
 	footer div {
 		width: max-content;
