@@ -70,9 +70,8 @@ function addAnotherBuilding() {
     });
 	
 	gtag('event', 'add_building_click', {
-      'event_category': 'Building Actions',
-      'event_label': 'Add Building'
-    });
+      		'event_label': 'Add Building'
+    	});
 	
 	var scrollTargetPosition = document.querySelector('.buildingBlock.animated').offsetTop - 20;
 	window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
@@ -150,8 +149,7 @@ function calculateCost() {
 		
 		
 		gtag('event', 'calculate_costbox', {
-			'event_category': 'Calculation Actions',
-			'event_label': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`
+			'event_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`
 		});
 
         // Lisää kustannukset ja alennukset costBoxiin
@@ -182,8 +180,6 @@ function calculateCost() {
             `;
         }
 		gtag('event', 'calculate_total', {
-			'event_category': 'Calculation Actions',
-			'event_label': 'Total Calculations',
 			'event_value': buildingBlocks.length
 		});
 
