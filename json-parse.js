@@ -61,11 +61,6 @@ function addAnotherBuilding() {
     var container = document.getElementById('buildingBlocksContainer');
     container.appendChild(newBuildingDiv);
 
-
-	
-    //setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
-    //newBuildingDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
     var newBuildingSelect = newBuildingDiv.querySelector('.buildingSelect');
     var newEnhancementSelect = newBuildingDiv.querySelector('.enhancementSelect');
 
@@ -74,6 +69,10 @@ function addAnotherBuilding() {
         loadEnhancements(newEnhancementSelect);
     });
 	
+	gtag('event', 'add_building_click', {
+      'event_category': 'Building Actions',
+      'event_label': 'Add Building'
+    });
 	
 	var scrollTargetPosition = document.querySelector('.buildingBlock.animated').offsetTop - 20;
 	window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
@@ -175,8 +174,12 @@ function calculateCost() {
                 ${totalDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(totalDiscounts[key])}</span>` : ''}
             `;
         }
+		gtag('event', 'calculate_click', {
+			'event_category': 'Calculation Actions',
+			'event_label': 'Calculate Cost'
+		});
+
         costSummaryElement.appendChild(totalCostDiv);
-		
 		smoothScrollTo('costSummary');
     }
 }
