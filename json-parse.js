@@ -148,7 +148,7 @@ function calculateCost() {
         `;
 		
 		
-		gtag('event', 'calculate_costbox', {
+		gtag('event', 'enhance_calc', {
 			'event_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`
 		});
 
@@ -179,7 +179,7 @@ function calculateCost() {
                 ${totalDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(totalDiscounts[key])}</span>` : ''}
             `;
         }
-		gtag('event', 'calculate_total', {
+		gtag('event', 'enhance_count', {
 			'event_value': buildingBlocks.length
 		});
 
