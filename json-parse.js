@@ -26,17 +26,35 @@ function loadEnhancements(enhancementSelect) {
 }
 
 function addAnotherBuilding() {
-	document.querySelectorAll('.buildingBlock.start').forEach(function(element) {
+    document.querySelectorAll('.buildingBlock.start').forEach(function(element) {
         element.classList.remove('start');
     });
-	document.querySelectorAll('.buildingBlock.animated').forEach(function(element) {
+    document.querySelectorAll('.buildingBlock.animated').forEach(function(element) {
         element.classList.remove('animated');
     });
+
     var newBuildingDiv = document.createElement('div');
     newBuildingDiv.className = 'buildingBlock animated';
-	
 
-    newBuildingDiv.innerHTML = `
+    var container = document.getElementById('buildingBlocksContainer');
+
+    // Luo ja lisää poistonappi
+    var removeButton = document.createElement('div');
+    removeButton.innerHTML = '<p><svg xmlns="http://www.w3.org/2000/svg" height="16" width="12" viewBox="0 0 384 512"><!--!Font Awesome Pro 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc.--><path d="M326.6 166.6L349.3 144 304 98.7l-22.6 22.6L192 210.7l-89.4-89.4L80 98.7 34.7 144l22.6 22.6L146.7 256 57.4 345.4 34.7 368 80 413.3l22.6-22.6L192 301.3l89.4 89.4L304 413.3 349.3 368l-22.6-22.6L237.3 256l89.4-89.4z"/></svg></p>';
+    removeButton.className = 'removeButton';
+
+	document.getElementById('buildingBlocksContainer').addEventListener('click', function(event) {
+		if (event.target.closest('.removeButton')) {
+			var buildingBlock = event.target.closest('.buildingBlock');
+			if (buildingBlock) {
+				buildingBlock.remove();
+			}
+		}
+	});
+
+    newBuildingDiv.appendChild(removeButton);
+
+    newBuildingDiv.innerHTML += `
         <div class="selectBuilds">
             <div class="selectBuild">
                 <label for="buildingSelect">Select Building:</label>
@@ -58,7 +76,6 @@ function addAnotherBuilding() {
             </div>
         </div>`;
 
-    var container = document.getElementById('buildingBlocksContainer');
     container.appendChild(newBuildingDiv);
 
     var newBuildingSelect = newBuildingDiv.querySelector('.buildingSelect');
@@ -68,18 +85,15 @@ function addAnotherBuilding() {
     newBuildingSelect.addEventListener('change', function() {
         loadEnhancements(newEnhancementSelect);
     });
-	
-	gtag('event', 'add_building_click', {
-      		'event_label': 'Add Building'
-    	});
-	
-	var scrollTargetPosition = document.querySelector('.buildingBlock.animated').offsetTop - 20;
-	window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
 
-	newBuildingDiv.classList.add('animated');
-	setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
-    
-	
+    gtag('event', 'add_building_click', {
+        'event_label': 'Add Building'
+    });
+
+    var scrollTargetPosition = newBuildingDiv.offsetTop - 20;
+    window.scrollTo({ top: scrollTargetPosition, behavior: 'smooth' });
+
+    setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
 }
 
 
