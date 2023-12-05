@@ -48,6 +48,9 @@ function addAnotherBuilding() {
 			var buildingBlock = event.target.closest('.buildingBlock');
 			if (buildingBlock) {
 				buildingBlock.remove();
+				gtag('event', 'remove_building_click', {
+					'event_label': 'remove Building'
+				});
 			}
 		}
 	});
