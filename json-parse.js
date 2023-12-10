@@ -166,7 +166,8 @@ function calculateCost() {
 		
 		
 		gtag('event', 'enhance_calc', {
-			'event_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`
+			'enhance_upgrade': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
+			'value': 1
 		});
 
         // Lisää kustannukset ja alennukset costBoxiin
