@@ -167,6 +167,7 @@ function calculateCost() {
 		
 		gtag('event', 'enhance_calc', {
 			'enhance_upgrade': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
+			'enhance_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
 			'value': 1
 		});
 
