@@ -7,22 +7,23 @@ document.addEventListener("DOMContentLoaded", function() {
         cookieBanner.style.display = "block";
     } else {
         cookieBanner.style.display = "none";
-        // Asetetaan GA4:n tila käyttäjän valinnan mukaan
-        window['ga-disable-G-0LX7SEF348'] = consent !== "accepted";
+	if(consent == "accepted"){
+		gtag('config', 'G-0LX7SEF348', { 'anonymize_ip': false });	
+	}
     }
 
     // Käsittele hyväksymisnappi
     document.getElementById("acceptCookies").addEventListener("click", function() {
         localStorage.setItem("cookieConsent", "accepted");
         cookieBanner.style.display = "none";
-        window['ga-disable-G-0LX7SEF348'] = false;
+        gtag('config', 'G-0LX7SEF348', { 'anonymize_ip': false });
     });
 
     // Käsittele kieltäytymisnappi
     document.getElementById("declineCookies").addEventListener("click", function() {
         localStorage.setItem("cookieConsent", "declined");
         cookieBanner.style.display = "none";
-        window['ga-disable-G-0LX7SEF348'] = true;
+        gtag('config', 'G-0LX7SEF348', { 'anonymize_ip': true });
     });
 	
 	document.getElementById("changeCookieSettings").addEventListener("click", function() {
