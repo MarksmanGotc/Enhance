@@ -111,6 +111,8 @@ function calculateCost() {
     var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
+	var urlParams = new URLSearchParams(window.location.search);
+	var debugMode = urlParams.get('debug') === 'true';
 
     // Lisää huomautukset Valyrian Stonen puuttumisesta ja alennusprosentin epätarkkuudesta
     costSummaryElement.innerHTML = `
@@ -128,10 +130,10 @@ function calculateCost() {
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
 		
-	let currentLevel = parseInt(currentLevelInput.value, 10);
+		let currentLevel = parseInt(currentLevelInput.value, 10);
         let targetLevel = parseInt(targetLevelInput.value, 10);
 		
-	if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
+		if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
             alert("Please check the levels for each building. Target level must be greater than current level.");
             return; // Keskeytä laskenta, jos tarkistus epäonnistuu
         }
@@ -171,16 +173,13 @@ function calculateCost() {
             <p class="stats">Stats increase: ${stats.toFixed(2)}%</p>
         `;
 	
-	var urlParams = new URLSearchParams(window.location.search);
-	var debugMode = urlParams.get('debug') === 'true';
-
-	if (!debugMode) {
-		gtag('event', 'enhance_calc', {
-			'enhance_upgrade': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
-			'enhance_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
-			'value': 1
-		});
-	}
+		if (!debugMode) {
+			gtag('event', 'enhance_calc', {
+				'enhance_upgrade': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
+				'enhance_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
+				'value': 1
+			});
+		}
 
         // Lisää kustannukset ja alennukset costBoxiin
         for (let key in blockCosts) {
@@ -209,10 +208,12 @@ function calculateCost() {
                 ${totalDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(totalDiscounts[key])}</span>` : ''}
             `;
         }
-		gtag('event', 'enhance_count', {
-			'event_value': buildingBlocks.length
-		});
-
+		if (!debugMode) {
+			gtag('event', 'enhance_count', {
+				'event_value': buildingBlocks.length
+			});
+		}
+			
         costSummaryElement.appendChild(totalCostDiv);
 		smoothScrollTo('costSummary');
     }
