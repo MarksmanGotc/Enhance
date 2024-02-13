@@ -71,11 +71,11 @@ function addAnotherBuilding() {
         <div class="selectLevel">
             <div class="currentLevel">
                 <label for="currentLevel">Current level:</label>
-                <input type="number" class="currentLevel" min="1" max="35" value="1">
+                <input type="number" class="currentLevel" min="1" max="34" value="1">
             </div>
             <div class="targetLevel">
                 <label for="targetLevel">Update level:</label>
-                <input type="number" class="targetLevel" min="1" max="35" value="35">
+                <input type="number" class="targetLevel" min="2" max="35" value="35">
             </div>
         </div>`;
 
@@ -234,15 +234,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function adjustLevelInputs(buildingBlock) {
-    let currentLevelInput = buildingBlock.querySelector('.currentLevel input');
-	let targetLevelInput = buildingBlock.querySelector('.targetLevel input');
+    var currentLevelInput = buildingBlock.querySelector('.currentLevel input');
+    var targetLevelInput = buildingBlock.querySelector('.targetLevel input');
 
     currentLevelInput.addEventListener('change', function() {
         var currentLevel = parseInt(currentLevelInput.value, 10);
-        targetLevelInput.min = currentLevel;
+        targetLevelInput.min = currentLevel+1;
 
-        if (parseInt(targetLevelInput.value, 10) < currentLevel) {
-            targetLevelInput.value = currentLevel;
+        if (parseInt(targetLevelInput.value, 10) <= currentLevel) {
+            targetLevelInput.value = currentLevel+1;
+        }
+    });
+	targetLevelInput.addEventListener('change', function() {
+        var currentLevel = parseInt(currentLevelInput.value, 10);
+        var targetLevel = parseInt(targetLevelInput.value, 10);
+        if (targetLevel <= currentLevel) {
+            targetLevelInput.value = currentLevel + 1;
         }
     });
 }
