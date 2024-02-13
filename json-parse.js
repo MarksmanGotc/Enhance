@@ -88,7 +88,9 @@ function addAnotherBuilding() {
     newBuildingSelect.addEventListener('change', function() {
         loadEnhancements(newEnhancementSelect);
     });
-
+	
+	adjustLevelInputs(newBuildingDiv);
+	
     gtag('event', 'add_building_click', {
         'event_label': 'Add Building'
     });
@@ -112,9 +114,9 @@ function calculateCost() {
 
     // Lisää huomautukset Valyrian Stonen puuttumisesta ja alennusprosentin epätarkkuudesta
     costSummaryElement.innerHTML = `
-        <p>Please note that the calculation for Valyrian Stone is missing, as it is not defined in the price list.</p>
-        ${aleMarble > 0 || aleKeystone > 0 ? `<p>Note: Discount percentages may not accurately reflect in-game calculations due to a known bug.</p>` : ''}
-    `;
+   	 <p>Please note: The calculation for Valyrian Stone is missing, as it is not defined in the price list.</p>
+  	  ${aleMarble > 0 || aleKeystone > 0 ? `<p>Please note: Discount percentages may not accurately reflect in-game calculations due to a known bug.</p>` : ''}
+     `;
 	
 
     var buildingBlocks = document.querySelectorAll('.buildingBlock');
@@ -127,7 +129,14 @@ function calculateCost() {
         let targetLevel = parseInt(targetLevelInput.value);
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-	
+		
+		let currentLevel = parseInt(currentLevelInput.value, 10);
+        let targetLevel = parseInt(targetLevelInput.value, 10);
+		
+		if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
+            alert("Please check the levels for each building. Target level must be greater than current level.");
+            return; // Keskeytä laskenta, jos tarkistus epäonnistuu
+        }
 		
         for (let j = currentLevel; j < targetLevel; j++) {
             blockCosts.slate += selectedPrice[j].Slate;
@@ -214,15 +223,31 @@ document.addEventListener('DOMContentLoaded', function() {
         loadBuildings(buildingSelectElement);
     });
 
-
-
 	document.querySelectorAll('.buildingSelect').forEach(function(buildingSelectElement) {
 		buildingSelectElement.addEventListener('change', function() {
 			var enhancementSelect = this.parentNode.parentNode.querySelector('.enhancementSelect');
 			loadEnhancements(enhancementSelect);
 		});
 	});
-});
+
+    // Aseta currentLevel ja targetLevel -kenttien säätölogiikka kaikille buildingBlock-elementeille
+    document.querySelectorAll('.buildingBlock').forEach(adjustLevelInputs);
+})
+
+
+function adjustLevelInputs(buildingBlock) {
+    var currentLevelInput = buildingBlock.querySelector('.currentLevel');
+    var targetLevelInput = buildingBlock.querySelector('.targetLevel');
+
+    currentLevelInput.addEventListener('change', function() {
+        var currentLevel = parseInt(currentLevelInput.value, 10);
+        targetLevelInput.min = currentLevel;
+
+        if (parseInt(targetLevelInput.value, 10) < currentLevel) {
+            targetLevelInput.value = currentLevel;
+        }
+    });
+}
 
 
 function smoothScrollTo(elementId) {
