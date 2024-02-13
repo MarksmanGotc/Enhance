@@ -130,12 +130,12 @@ function calculateCost() {
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
 		
-		let currentLevel = parseInt(currentLevelInput.value, 10);
-        let targetLevel = parseInt(targetLevelInput.value, 10);
+	let currentLevelCheck = parseInt(currentLevelInput.value, 10);
+        let targetLevelCheck = parseInt(targetLevelInput.value, 10);
 		
-		if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
+	if (isNaN(currentLevelCheck) || isNaN(targetLevelCheck) || currentLevelCheck < 1 || targetLevelCheck < currentLevel) {
             alert("Please check the levels for each building. Target level must be greater than current level.");
-            return; // Keskeytä laskenta, jos tarkistus epäonnistuu
+            return;
         }
 		
         for (let j = currentLevel; j < targetLevel; j++) {
