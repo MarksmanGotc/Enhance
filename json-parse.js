@@ -125,17 +125,15 @@ function calculateCost() {
         let enhancementSelect = block.querySelector('.enhancementSelect');
         let currentLevelInput = block.querySelector('.currentLevel input');
         let targetLevelInput = block.querySelector('.targetLevel input');
-        let currentLevel = parseInt(currentLevelInput.value);
-        let targetLevel = parseInt(targetLevelInput.value);
         let selectedPrice = price[enhancementSelect.value];
         var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
 		
-	let currentLevelCheck = parseInt(currentLevelInput.value, 10);
-        let targetLevelCheck = parseInt(targetLevelInput.value, 10);
+		let currentLevel = parseInt(currentLevelInput.value, 10);
+        let targetLevel = parseInt(targetLevelInput.value, 10);
 		
-	if (isNaN(currentLevelCheck) || isNaN(targetLevelCheck) || currentLevelCheck < 1 || targetLevelCheck < currentLevel) {
+		if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
             alert("Please check the levels for each building. Target level must be greater than current level.");
-            return;
+            return; // Keskeytä laskenta, jos tarkistus epäonnistuu
         }
 		
         for (let j = currentLevel; j < targetLevel; j++) {
@@ -240,6 +238,7 @@ function adjustLevelInputs(buildingBlock) {
     var targetLevelInput = buildingBlock.querySelector('.targetLevel');
 
     currentLevelInput.addEventListener('change', function() {
+	console.log('currentLevel changed');
         var currentLevel = parseInt(currentLevelInput.value, 10);
         targetLevelInput.min = currentLevel;
 
