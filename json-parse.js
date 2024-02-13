@@ -234,11 +234,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function adjustLevelInputs(buildingBlock) {
-    var currentLevelInput = buildingBlock.querySelector('.currentLevel');
-    var targetLevelInput = buildingBlock.querySelector('.targetLevel');
+    let currentLevelInput = block.querySelector('.currentLevel input');
+	let targetLevelInput = block.querySelector('.targetLevel input');
 
     currentLevelInput.addEventListener('change', function() {
-	console.log('currentLevel changed');
         var currentLevel = parseInt(currentLevelInput.value, 10);
         targetLevelInput.min = currentLevel;
 
