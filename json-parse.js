@@ -170,13 +170,17 @@ function calculateCost() {
 	    <p class="level">Level ${currentLevel} to ${targetLevel}</p>
             <p class="stats">Stats increase: ${stats.toFixed(2)}%</p>
         `;
-		
-		
+	
+	var urlParams = new URLSearchParams(window.location.search);
+	var debugMode = urlParams.get('debug') === 'true';
+
+	if (!debugMode) {
 		gtag('event', 'enhance_calc', {
 			'enhance_upgrade': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
 			'enhance_value': `${buildingText} - ${enhancementText}; Level ${currentLevel} to ${targetLevel}`,
 			'value': 1
 		});
+	}
 
         // Lisää kustannukset ja alennukset costBoxiin
         for (let key in blockCosts) {
