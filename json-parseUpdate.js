@@ -185,7 +185,7 @@ function calculateCost() {
 					type === "Single March Size vs. Player" ||
 					type === "March Slots" ||
 					type === "Workshop Training Capacity") {
-                        individualStatsList.push(`${type}: ${statValue.toFixed(0)}`);
+                        individualStatsList.push(`${type}: ${statValue.toLocaleString('en-US')}`);
                     } else {
                         individualStatsList.push(`${type}: ${statValue.toFixed(2)}%`);
                     }
