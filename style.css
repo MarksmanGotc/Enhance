@@ -193,6 +193,14 @@ div#buildingBlocksContainer .buildingBlock:last-child, .buildingBlock.start  {
 p.stats {
     color: #4caf50;
 }
+div.stats {
+    padding-left: 8px;
+}
+
+div.stats p {
+    color: #4caf50;
+    font-size: 13px;
+}
 pre {
     color: #4caf50;
     margin-top: 4px;
