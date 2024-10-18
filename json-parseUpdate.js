@@ -103,9 +103,6 @@ function addAnotherBuilding() {
 
 
 function calculateCost() {
-    var aleSlate = parseFloat(document.querySelector('.aleSlate').value) / 100 || 0;
-    var aleMarble = parseFloat(document.querySelector('.aleMarble').value) / 100 || 0;
-    var aleKeystone = parseFloat(document.querySelector('.aleKeystone').value) / 100 || 0;
     var totalCosts = { slate: 0, marble: 0, limestone: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0 };
     var totalDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
     var totalStatsList = [];
@@ -216,14 +213,47 @@ function calculateCost() {
         }
 
         var blockDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
-        for (let key in blockCosts) {
-            let originalCost = blockCosts[key];
-            let discount = key === 'marble' ? aleMarble : (key === 'keystone' ? aleKeystone : (key === 'limestone' ? aleSlate : 0));
-            blockDiscounts[key] = Math.round(originalCost * discount);
-            blockCosts[key] = Math.round(originalCost - blockDiscounts[key]);
-            totalCosts[key] += blockCosts[key];
-            totalDiscounts[key] += blockDiscounts[key];
-        }
+
+		let hasDiscount = false;
+
+		for (let key in blockCosts) {
+			let originalCost = blockCosts[key];
+			let discount = 0;
+
+			if (key === 'marble') {
+				discount = parseFloat(document.querySelector('.aleMarble').value) || 0;
+			} else if (key === 'keystone') {
+				discount = parseFloat(document.querySelector('.aleKeystone').value) || 0;
+			} else if (key === 'slate') {
+				discount = parseFloat(document.querySelector('.aleSlate').value) || 0;
+			}
+
+			// Lasketaan alennettu hinta käyttäen uutta kaavaa
+			let discountedCost = Math.round((100 / (discount + 100)) * originalCost);
+
+			blockDiscounts[key] = originalCost - discountedCost;
+			blockCosts[key] = discountedCost;
+
+			totalCosts[key] += discountedCost;
+			totalDiscounts[key] += blockDiscounts[key];
+
+			// Tarkista onko jokin alennus käytössä
+			if (discount > 0) {
+				hasDiscount = true;
+			}
+		}
+
+		// Lisää varoitusteksti vain kerran
+		if (hasDiscount) {
+			let buttonsDiv = document.querySelector('.buttons');
+			if (buttonsDiv && !document.querySelector('.warning')) { // Tarkista, onko varoitustekstiä jo olemassa
+				let warningText = document.createElement('p');
+				warningText.className = 'warning';
+				warningText.textContent = 'The discounted value is not completely accurate, WB does not provide the correct discount value.';
+				buttonsDiv.insertAdjacentElement('afterend', warningText);
+			}
+		}
+
 
         var enhancementText = enhancementSelect.options[enhancementSelect.selectedIndex].text;
         var buildingText = block.querySelector('.buildingSelect').options[block.querySelector('.buildingSelect').selectedIndex].text;
@@ -235,12 +265,12 @@ function calculateCost() {
             <p class="level">Level ${currentLevel} to ${targetLevel}</p>
         `;
 
-       // Lisää stats-nousut korttiin
-	if (individualStatsList.length > 1) {
-	    blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><div class="stats">${individualStatsList.map(stat => `<p>${stat}</p>`).join('')}</div>`;
-	} else if (individualStatsList.length === 1) {
-	    blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
-	}
+        // Lisää stats-nousut korttiin
+		if (individualStatsList.length > 1) {
+			blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><div class="stats">${individualStatsList.map(stat => `<p>${stat}</p>`).join('')}</div>`;
+		} else if (individualStatsList.length === 1) {
+			blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
+		}
 
 
         // Lisää kustannukset ja alennukset
@@ -250,6 +280,8 @@ function calculateCost() {
                 ${blockDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(blockDiscounts[key])}</span>` : ''}
             `;
         }
+
+		
         costSummaryElement.appendChild(blockCostDiv);
     }
 
