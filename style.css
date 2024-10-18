@@ -193,6 +193,11 @@ div#buildingBlocksContainer .buildingBlock:last-child, .buildingBlock.start  {
 p.stats {
     color: #4caf50;
 }
+pre {
+    color: #4caf50;
+    margin-top: 4px;
+    margin-left: 10px;
+}
 
 .totalCosts p, .costBox p {
     margin-bottom: 0;
