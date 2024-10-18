@@ -235,12 +235,13 @@ function calculateCost() {
             <p class="level">Level ${currentLevel} to ${targetLevel}</p>
         `;
 
-        // Lisää stats-nousut korttiin
-        if (individualStatsList.length > 1) {
-            blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><pre class="stats">${individualStatsList.join('\n')}</pre>`;
-        } else if (individualStatsList.length === 1) {
-            blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
-        }
+       // Lisää stats-nousut korttiin
+	if (individualStatsList.length > 1) {
+	    blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><div class="stats">${individualStatsList.map(stat => `<p>${stat}</p>`).join('')}</div>`;
+	} else if (individualStatsList.length === 1) {
+	    blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
+	}
+
 
         // Lisää kustannukset ja alennukset
         for (let key in blockCosts) {
