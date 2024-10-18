@@ -212,7 +212,11 @@ pre {
     margin-top: 10px;
     font-size: 16px;
 }
-
+p.warning {
+    color: #e72323;
+    font-style: italic;
+    margin-bottom: 0;
+}
 #costSummary > p {
     color: #e72323;
     font-style: italic;
