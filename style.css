@@ -237,8 +237,6 @@ footer {
     justify-content: center;
     padding-top: 10px;
     background: #08425a;
-    /* position: fixed; */
-    /* bottom: 0; */
 }
 
 footer div {
@@ -344,6 +342,9 @@ footer p {
 }
 
 @media (max-width: 600px) {
+	body {
+		min-height: initial;
+	}
 	footer div {
 		width: max-content;
 	}
