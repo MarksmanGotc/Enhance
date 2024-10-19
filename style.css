@@ -368,7 +368,7 @@ footer svg {
     right: 0;
 }
 
-.gift button.colose:hover svg {
+.gift button.close:hover svg {
 	transform: rotate(90deg);	
 }
 .gift button.close svg {
