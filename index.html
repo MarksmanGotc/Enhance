@@ -93,12 +93,21 @@
 				</svg>
 			</button>
 			<p>This project is a personal initiative, and while it's free to use, any donations are greatly appreciated. Your support helps improve and maintain the service. <span>Thank you!</span></p>
-			<a href="https://www.paypal.com/paypalme/marksmanGotc" target="_blank">
-				<button style="padding: 10px 20px; background-color: #08425a; color: white; border: none; border-radius: 5px; cursor: pointer;">
-					Donate via PayPal
-				</button>
-			</a>
-
+			<div id="donate-button-container">
+				<div id="donate-button"></div>
+				<script src="https://www.paypalobjects.com/donate/sdk/donate-sdk.js" charset="UTF-8"></script>
+				<script>
+				PayPal.Donation.Button({
+				env:'production',
+				hosted_button_id:'NSF868HN3KUXJ',
+				image: {
+				src:'https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif',
+				alt:'Donate with PayPal button',
+				title:'PayPal - The safer, easier way to pay online!',
+				}
+				}).render('#donate-button');
+				</script>
+			</div>
 		</div>
 	</div>
 	<!--<div id="cookieConsentBanner" class="cookie-banner">
