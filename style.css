@@ -233,6 +233,7 @@ footer {
     margin-left: auto;
     margin-right: auto;
     width: 100%;
+	column-gap: 20px;
     display: flex;
     justify-content: center;
     height: 50px;
