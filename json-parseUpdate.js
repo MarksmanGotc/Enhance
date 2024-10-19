@@ -108,7 +108,9 @@ function calculateCost() {
     var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
-
+	var costSummaryElement = document.getElementById('costSummary');
+    var wrapperElement = document.querySelector('.wrapper');
+	
     costSummaryElement.innerHTML = '';
 
     var buildingBlocks = document.querySelectorAll('.buildingBlock');
@@ -303,6 +305,41 @@ function calculateCost() {
         }
         costSummaryElement.appendChild(totalCostDiv);
     }
+	
+	
+	if (!document.getElementById('closeResults')) {
+		let closeButton = document.createElement('button');
+		closeButton.id = 'closeResults';
+
+		// Luo tekstielementti ja svg kuvake napin sisään
+		closeButton.innerHTML = `
+			<span>Click here to go back and modify your selections</span>
+			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+				<path d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"></path>
+			</svg>`;
+
+		let closeWrapper = document.createElement('div');
+		closeWrapper.appendChild(closeButton);
+
+		closeWrapper.classList.add('closeWrapper');
+
+		closeWrapper.addEventListener('click', function() {
+			wrapperElement.style.display = 'block';
+			costSummaryElement.style.display = 'none';
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
+
+		costSummaryElement.prepend(closeWrapper);
+	}
+
+
+
+    // Piilotetaan wrapper ja näytetään costSummary
+    wrapperElement.style.display = 'none';
+    costSummaryElement.style.display = 'flex';
+	
+	window.scrollTo({ top: 0, behavior: 'smooth' });
+	
 }
 // Kutsu funktioita sivun latautuessa
 document.addEventListener('DOMContentLoaded', function() {
