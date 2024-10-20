@@ -9,6 +9,30 @@ body {
 	flex-direction: column;
 	gap: 20px;
 }
+.donate-header {
+    width: 100%;
+    display: flex;
+}
+
+.donate-header button#openGiftFromHeader {
+    background: #fff;
+    color: #08425a;
+    column-gap: 10px;
+    margin: 0;
+    padding-top: 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row;
+}
+
+.donate-header button#openGiftFromHeader:hover span {
+    text-decoration: underline;
+}
+
+.donate-header button#openGiftFromHeader svg {
+    width: 20px;
+    fill: #08425a;
+}
 .wrapper {
     max-width: 600px;
     margin: 0 auto;
