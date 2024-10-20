@@ -13,7 +13,11 @@ body {
     width: 100%;
     display: flex;
 }
-
+.stats p {
+    color: #4caf50;
+    font-size: 13px;
+    margin-left: 10px;
+}
 .donate-header button#openGiftFromHeader {
     background: #fff;
     color: #08425a;
