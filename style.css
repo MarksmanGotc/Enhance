@@ -419,6 +419,21 @@ footer svg {
     padding: 10px 0px;
 }
 
+.resources * {
+    display: inline-block;
+}
+
+.resources {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+}
+
+.resources img {
+    max-width: 40px;
+}
+
+
 @media (max-width: 600px) {
 	body {
 		min-height: initial;
@@ -427,6 +442,7 @@ footer svg {
 		width: max-content;
 	}
 }
+
 
 @media (max-width: 500px) {
     .selectBuilds, .yourBoost {
