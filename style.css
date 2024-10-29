@@ -347,31 +347,28 @@ footer svg {
 	font-size: 13px;
 }
 
-#costSummary > .closeWrapper {
-    background: #f3f3f9;
-    width: 100%;
-	display: flex;
-}
 
-#costSummary > .closeWrapper button {
+#costSummary > button#closeResults {
     background: transparent;
     column-gap: 20px;
 	padding: 0px 20px;
     margin: 0;
     color: #08425a;
+	width: 100%;
+	display: flex;
 }
 
-#costSummary > .closeWrapper button svg {
+#costSummary > button#closeResults svg {
     height: 20px;
     fill: #08425a;
 	transition: 0.2s;
 }
 
-#costSummary > .closeWrapper button:hover svg {
+#costSummary > button#closeResults:hover svg {
     transform: rotate(90deg);
 }
 
-#costSummary > .closeWrapper button:hover span {
+#costSummary > button#closeResults:hover span {
     text-decoration: underline;
 }
 
