@@ -131,8 +131,8 @@ function addAnotherBuilding() {
 
 
 function calculateCost() { 
-    var totalCosts = { slate: 0, marble: 0, limestone: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0 };
-    var totalDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
+    var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
+    var totalDiscounts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
     var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
@@ -143,12 +143,14 @@ function calculateCost() {
     const resourceIcons = {
         slate: '/Enhance/Enhance/slate.png',
         marble: '/Enhance/Enhance/marble.png',
-        limestone: '/Enhance/Enhance/limestone.png',
         brick: '/Enhance/Enhance/brick.png',
         pine: '/Enhance/Enhance/pine.png',
         keystone: '/Enhance/Enhance/keystone.png',
-        valyrianStone: '/Enhance/Enhance/valyrianstone.png'
+        valyrianStone: '/Enhance/Enhance/valyrianstone.png',
+        limestone: '/Enhance/Enhance/limestone.png'
     };
+
+    const resourceOrder = ['slate', 'marble', 'brick', 'pine', 'keystone', 'valyrianStone', 'limestone'];
 
     var buildingBlocks = document.querySelectorAll('.buildingBlock');
     for (let i = 0; i < buildingBlocks.length; i++) {
@@ -159,7 +161,7 @@ function calculateCost() {
         let currentLevel = parseInt(currentLevelInput.value, 10);
         let targetLevel = parseInt(targetLevelInput.value, 10);
 
-        var blockCosts = { slate: 0, marble: 0, limestone: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0 };
+        var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
         var statsIncrease = {};
         var individualStatsList = [];
 
@@ -175,11 +177,11 @@ function calculateCost() {
             for (let j = currentLevel; j < targetLevel; j++) {
                 blockCosts.slate += enhancement4Price[j].Slate;
                 blockCosts.marble += enhancement4Price[j].Marble;
-                blockCosts.limestone += enhancement4Price[j].Limestone;
                 blockCosts.brick += enhancement4Price[j].Brick;
                 blockCosts.pine += enhancement4Price[j].Pine;
                 blockCosts.keystone += enhancement4Price[j].Keystone;
                 blockCosts.valyrianStone += enhancement4Price[j]["Valyrian Stone"] || 0;
+                blockCosts.limestone += enhancement4Price[j].Limestone;
 
                 let enhancements = enhancementData[j].Enhancements;
                 enhancements.forEach((enh) => {
@@ -219,11 +221,11 @@ function calculateCost() {
             for (let j = currentLevel; j < targetLevel; j++) {
                 blockCosts.slate += selectedPrice[j].Slate;
                 blockCosts.marble += selectedPrice[j].Marble;
-                blockCosts.limestone += selectedPrice[j].Limestone;
                 blockCosts.brick += selectedPrice[j].Brick;
                 blockCosts.pine += selectedPrice[j].Pine;
                 blockCosts.keystone += selectedPrice[j].Keystone;
                 blockCosts.valyrianStone += selectedPrice[j]["Valyrian Stone"] || 0;
+                blockCosts.limestone += selectedPrice[j].Limestone;
             }
 
             var stats = selectedPrice[targetLevel - 1].Value - (currentLevel > 0 ? selectedPrice[currentLevel - 1].Value : 0);
@@ -234,7 +236,7 @@ function calculateCost() {
             }
         }
 
-        var blockDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
+        var blockDiscounts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
 
         for (let key in blockCosts) {
             let originalCost = blockCosts[key];
@@ -268,16 +270,17 @@ function calculateCost() {
             blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
         }
 
-        for (let key in blockCosts) {
+        resourceOrder.forEach(key => {
             if (blockCosts[key] > 0) {
+                const efficiencyClass = blockDiscounts[key] > 0 ? 'efficiency' : '';
                 blockCostDiv.innerHTML += `
-                    <div class="resources">
+                    <div class="resources ${efficiencyClass}">
                         <img src="${resourceIcons[key]}" alt="${key} icon">
                         <p>${numberFormatter.format(blockCosts[key])}</p>
                     </div>
                 `;
             }
-        }
+        });
 
         costSummaryElement.appendChild(blockCostDiv);
     }
@@ -291,16 +294,17 @@ function calculateCost() {
             ${statsListHtml}
         `;
 
-        for (let key in totalCosts) {
+        resourceOrder.forEach(key => {
             if (totalCosts[key] > 0) {
+                const efficiencyClass = totalDiscounts[key] > 0 ? 'efficiency' : '';
                 totalCostDiv.innerHTML += `
-                    <div class="resources">
+                    <div class="resources ${efficiencyClass}">
                         <img src="${resourceIcons[key]}" alt="${key} icon">
                         <p>${numberFormatter.format(totalCosts[key])}</p>
                     </div>
                 `;
             }
-        }
+        });
         costSummaryElement.appendChild(totalCostDiv);
     }
 
@@ -322,11 +326,12 @@ function calculateCost() {
         
         costSummaryElement.prepend(closeButton);
     }
-    
+
     wrapperElement.style.display = 'none';
     costSummaryElement.style.display = 'flex';
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 
 // Funktio sekuntien muuntamiseen tunneiksi, minuuteiksi ja sekunneiksi
 function formatTime(seconds) {
