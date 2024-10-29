@@ -71,11 +71,11 @@ function addAnotherBuilding() {
         <div class="selectLevel">
             <div class="currentLevel">
                 <label for="currentLevel">Current level:</label>
-                <input type="number" class="currentLevel" min="1" max="34" value="1">
+                <input type="number" class="currentLevel" min="0" max="39" value="0">
             </div>
             <div class="targetLevel">
                 <label for="targetLevel">Update level:</label>
-                <input type="number" class="targetLevel" min="2" max="35" value="35">
+                <input type="number" class="targetLevel" min="1" max="40" value="40">
             </div>
         </div>`;
 
@@ -102,24 +102,16 @@ function addAnotherBuilding() {
 }
 
 
-function calculateCost() {
-    var aleSlate = parseFloat(document.querySelector('.aleSlate').value) / 100 || 0;
-    var aleMarble = parseFloat(document.querySelector('.aleMarble').value) / 100 || 0;
-    var aleKeystone = parseFloat(document.querySelector('.aleKeystone').value) / 100 || 0;
-    var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-    var totalDiscounts = { slate: 0, marble: 0, keystone: 0 };
+function calculateCost() { 
+    var totalCosts = { slate: 0, marble: 0, limestone: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0 };
+    var totalDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
     var totalStatsList = [];
     var costSummaryElement = document.getElementById('costSummary');
     var numberFormatter = new Intl.NumberFormat('en-US');
-    var urlParams = new URLSearchParams(window.location.search);
-    var debugMode = urlParams.get('debug') === 'true';
+    var wrapperElement = document.querySelector('.wrapper');
+    
+    costSummaryElement.innerHTML = '';
 
-    costSummaryElement.innerHTML = `
-        <p>Please note: The calculation for Valyrian Stone is missing, as it is not defined in the price list.</p>
-        ${aleMarble > 0 || aleKeystone > 0 ? `<p>Please note: Discount percentages may not accurately reflect in-game calculations due to a known bug.</p>` : ''}
-    `;
-
-    // Määritä resurssi-ikonit
     const resourceIcons = {
         slate: '/Enhance/Enhance/slate.png',
         marble: '/Enhance/Enhance/marble.png',
@@ -136,61 +128,129 @@ function calculateCost() {
         let enhancementSelect = block.querySelector('.enhancementSelect');
         let currentLevelInput = block.querySelector('.currentLevel input');
         let targetLevelInput = block.querySelector('.targetLevel input');
-        let selectedPrice = price[enhancementSelect.value];
-        var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0 };
-
         let currentLevel = parseInt(currentLevelInput.value, 10);
         let targetLevel = parseInt(targetLevelInput.value, 10);
 
-        if (isNaN(currentLevel) || isNaN(targetLevel) || currentLevel < 1 || targetLevel < currentLevel) {
-            alert("Please check the levels for each building. Target level must be greater than current level.");
-            return;
+        var blockCosts = { slate: 0, marble: 0, limestone: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0 };
+        var statsIncrease = {};
+        var individualStatsList = [];
+
+        let buildingSelect = block.querySelector('.buildingSelect');
+        let selectedBuilding = buildingSelect.value;
+
+        let isEnhancement4 = enhancementSelect.options[enhancementSelect.selectedIndex].text === "Enhancement 4";
+        
+        if (isEnhancement4) {
+            let enhancement4Price = enhancement4Prices.Special;
+            let enhancementData = build[selectedBuilding]["Enhancement 4"]; 
+
+            for (let j = currentLevel; j < targetLevel; j++) {
+                blockCosts.slate += enhancement4Price[j].Slate;
+                blockCosts.marble += enhancement4Price[j].Marble;
+                blockCosts.limestone += enhancement4Price[j].Limestone;
+                blockCosts.brick += enhancement4Price[j].Brick;
+                blockCosts.pine += enhancement4Price[j].Pine;
+                blockCosts.keystone += enhancement4Price[j].Keystone;
+                blockCosts.valyrianStone += enhancement4Price[j]["Valyrian Stone"] || 0;
+
+                let enhancements = enhancementData[j].Enhancements;
+                enhancements.forEach((enh) => {
+                    let type = enh.Type;
+                    let value = typeof enh.Value === 'string' ? parseFloat(enh.Value.replace('%', '')) : parseFloat(enh.Value);
+
+                    if (!statsIncrease[type]) {
+                        statsIncrease[type] = 0;
+                    }
+
+                    if (enhancementData[j + 1]) {
+                        let nextEnh = enhancementData[j + 1].Enhancements.find(e => e.Type === type);
+                        if (nextEnh) {
+                            let nextValue = typeof nextEnh.Value === 'string' ? parseFloat(nextEnh.Value.replace('%', '')) : parseFloat(nextEnh.Value);
+                            statsIncrease[type] += nextValue - value;
+                        }
+                    }
+                });
+            }
+
+            for (let type in statsIncrease) {
+                let statValue = statsIncrease[type];
+                if (statValue !== 0) {
+                    if (type === "Free Build Time") {
+                        let timeString = formatTime(statValue);
+                        individualStatsList.push(`${type}: ${timeString}`);
+                    } else {
+                        individualStatsList.push(`${type}: ${statValue.toFixed(2)}%`);
+                    }
+                }
+            }
+
+            individualStatsList.forEach(stat => totalStatsList.push(stat));
+        } else {
+            let selectedPrice = price[enhancementSelect.value];
+
+            for (let j = currentLevel; j < targetLevel; j++) {
+                blockCosts.slate += selectedPrice[j].Slate;
+                blockCosts.marble += selectedPrice[j].Marble;
+                blockCosts.limestone += selectedPrice[j].Limestone;
+                blockCosts.brick += selectedPrice[j].Brick;
+                blockCosts.pine += selectedPrice[j].Pine;
+                blockCosts.keystone += selectedPrice[j].Keystone;
+                blockCosts.valyrianStone += selectedPrice[j]["Valyrian Stone"] || 0;
+            }
+
+            var stats = selectedPrice[targetLevel - 1].Value - (currentLevel > 0 ? selectedPrice[currentLevel - 1].Value : 0);
+            if (stats !== 0) {
+                let statText = `${enhancementSelect.options[enhancementSelect.selectedIndex].text}: ${stats.toFixed(2)}%`;
+                individualStatsList.push(statText);
+                totalStatsList.push(statText);
+            }
         }
 
-        for (let j = currentLevel; j < targetLevel; j++) {
-            blockCosts.slate += selectedPrice[j].Slate;
-            blockCosts.marble += selectedPrice[j].Marble;
-            blockCosts.brick += selectedPrice[j].Brick;
-            blockCosts.pine += selectedPrice[j].Pine;
-            blockCosts.keystone += selectedPrice[j].Keystone;
-        }
+        var blockDiscounts = { slate: 0, marble: 0, limestone: 0, keystone: 0, valyrianStone: 0 };
 
-        var blockDiscounts = { slate: 0, marble: 0, keystone: 0 };
         for (let key in blockCosts) {
             let originalCost = blockCosts[key];
-            let discount = key === 'marble' ? aleMarble : (key === 'keystone' ? aleKeystone : 0);
-            blockDiscounts[key] = Math.round(originalCost * discount);
-            blockCosts[key] = Math.round(originalCost - blockDiscounts[key]);
-            totalCosts[key] += blockCosts[key];
+            let discount = key === 'marble' ? parseFloat(document.querySelector('.aleMarble').value) || 0
+                        : key === 'keystone' ? parseFloat(document.querySelector('.aleKeystone').value) || 0
+                        : key === 'slate' ? parseFloat(document.querySelector('.aleSlate').value) || 0
+                        : 0;
+
+            let discountedCost = Math.round((100 / (discount + 100)) * originalCost);
+
+            blockDiscounts[key] = originalCost - discountedCost;
+            blockCosts[key] = discountedCost;
+
+            totalCosts[key] += discountedCost;
             totalDiscounts[key] += blockDiscounts[key];
         }
 
-        var stats = selectedPrice[targetLevel - 1].Value - selectedPrice[currentLevel - 1].Value;
         var enhancementText = enhancementSelect.options[enhancementSelect.selectedIndex].text;
         var buildingText = block.querySelector('.buildingSelect').options[block.querySelector('.buildingSelect').selectedIndex].text;
-
-        totalStatsList.push(`${enhancementText} +${stats.toFixed(2)}%`);
 
         var blockCostDiv = document.createElement('div');
         blockCostDiv.classList.add('costBox');
         blockCostDiv.innerHTML = `
             <h4>${buildingText} - ${enhancementText}</h4>
             <p class="level">Level ${currentLevel} to ${targetLevel}</p>
-            <p class="stats">Stats increase: ${stats.toFixed(2)}%</p>
         `;
+
+        if (individualStatsList.length > 1) {
+            blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><div class="stats">${individualStatsList.map(stat => `<p>${stat}</p>`).join('')}</div>`;
+        } else if (individualStatsList.length === 1) {
+            blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
+        }
 
         for (let key in blockCosts) {
             if (blockCosts[key] > 0) {
                 blockCostDiv.innerHTML += `
                     <div class="resources">
-                        <img src="${resourceIcons[key]}" alt="${key.charAt(0).toUpperCase() + key.slice(1)} icon">
+                        <img src="${resourceIcons[key]}" alt="${key} icon">
                         <p>${numberFormatter.format(blockCosts[key])}</p>
                     </div>
                 `;
-                // Kommentoidaan pois alennusteksti
-                // ${blockDiscounts[key] > 0 ? `<span>Cost Efficiency saved on ${key.charAt(0).toUpperCase() + key.slice(1)}: ${numberFormatter.format(blockDiscounts[key])}</span>` : ''}
             }
         }
+
         costSummaryElement.appendChild(blockCostDiv);
     }
 
@@ -198,13 +258,16 @@ function calculateCost() {
         var totalCostDiv = document.createElement('div');
         totalCostDiv.classList.add('totalCosts');
         var statsListHtml = totalStatsList.map(stat => `<p class="stats">${stat}</p>`).join('');
-        totalCostDiv.innerHTML = `<h3>Costs in total:</h3>${statsListHtml}`;
+        totalCostDiv.innerHTML = `
+            <h3>Costs in total:</h3>
+            ${statsListHtml}
+        `;
 
         for (let key in totalCosts) {
             if (totalCosts[key] > 0) {
                 totalCostDiv.innerHTML += `
                     <div class="resources">
-                        <img src="${resourceIcons[key]}" alt="${key.charAt(0).toUpperCase() + key.slice(1)} icon">
+                        <img src="${resourceIcons[key]}" alt="${key} icon">
                         <p>${numberFormatter.format(totalCosts[key])}</p>
                     </div>
                 `;
@@ -212,6 +275,48 @@ function calculateCost() {
         }
         costSummaryElement.appendChild(totalCostDiv);
     }
+
+    if (!document.getElementById('closeResults')) {
+        let closeButton = document.createElement('button');
+        closeButton.id = 'closeResults';
+        
+        closeButton.innerHTML = `
+            <span>Click here to go back and modify your selections</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                <path d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4-9.4 24.6-9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"></path>
+            </svg>`;
+        
+        closeButton.addEventListener('click', function() {
+            wrapperElement.style.display = 'block';
+            costSummaryElement.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        costSummaryElement.prepend(closeButton);
+    }
+    
+    wrapperElement.style.display = 'none';
+    costSummaryElement.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Funktio sekuntien muuntamiseen tunneiksi, minuuteiksi ja sekunneiksi
+function formatTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const remainingSeconds = seconds % 60;
+
+    let timeString = '';
+    if (hours > 0) {
+        timeString += `${hours}h `;
+    }
+    if (minutes > 0) {
+        timeString += `${minutes}m `;
+    }
+    if (remainingSeconds > 0 || timeString === '') {
+        timeString += `${remainingSeconds}s`;
+    }
+    return timeString.trim();
 }
 
 // Kutsu funktioita sivun latautuessa
