@@ -1,3 +1,31 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Kun footerin sisällä olevaa SVG:tä painetaan
+    document.querySelectorAll('footer svg, #openGiftFromHeader').forEach(element => {
+		element.addEventListener('click', function() {
+			const pageDivs = document.querySelectorAll('.page > div');
+			const giftDiv = document.querySelector('.page .gift');
+
+			pageDivs.forEach(div => {
+				div.style.display = 'none';
+			});
+			giftDiv.style.display = 'flex';
+			gtag('event', 'donate_click', {
+				'event_label_gift': 'Open domnate views'
+			});
+		});
+	});
+
+    document.querySelector('.gift button').addEventListener('click', function() {
+        const pageDivs = document.querySelectorAll('.page > div');
+        const wrapperDiv = document.querySelector('.page .wrapper');
+
+        pageDivs.forEach(div => {
+            div.style.display = 'none';
+        });
+
+        wrapperDiv.style.display = 'block';
+    });
+});
 function loadBuildings(buildingSelectElement) {
     buildingSelectElement.innerHTML = '';
     for (let building in build) {
