@@ -129,7 +129,7 @@ function addAnotherBuilding() {
     setTimeout(() => newBuildingDiv.classList.remove('animated'), 4000);
 }
 
-
+/*
 function calculateCost() { 
     var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
     var totalDiscounts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
@@ -330,7 +330,231 @@ function calculateCost() {
     wrapperElement.style.display = 'none';
     costSummaryElement.style.display = 'flex';
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}*/
+
+function calculateCost() { 
+    var totalCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
+    var totalDiscounts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
+    var totalStatsList = [];
+    var costSummaryElement = document.getElementById('costSummary');
+    var numberFormatter = new Intl.NumberFormat('en-US');
+    var wrapperElement = document.querySelector('.wrapper');
+    
+    costSummaryElement.innerHTML = '';
+
+    const resourceIcons = {
+        slate: '/Enhance/Enhance/slate.png',
+        marble: '/Enhance/Enhance/marble.png',
+        brick: '/Enhance/Enhance/brick.png',
+        pine: '/Enhance/Enhance/pine.png',
+        keystone: '/Enhance/Enhance/keystone.png',
+        valyrianStone: '/Enhance/Enhance/valyrianstone.png',
+        limestone: '/Enhance/Enhance/limestone.png'
+    };
+
+    const resourceOrder = ['slate', 'marble', 'brick', 'pine', 'keystone', 'valyrianStone', 'limestone'];
+
+    const nonPercentageTypes = [
+        "Barracks Training Capacity",
+        "March Size vs. Seats of Power",
+        "Rallied Troops vs. Seats of Power",
+        "Rallied Troop Capacity",
+        "Range Training Capacity",
+        "Wounded Capacity",
+        "Dragon: Max March Size",
+        "Stable Training Capacity",
+        "Training Capacity",
+        "Reinforcement Capacity for Seats of Power",
+        "Rally Slots",
+        "Single March Size vs. Player",
+        "March Slots",
+        "Workshop Training Capacity"
+    ];
+
+    var buildingBlocks = document.querySelectorAll('.buildingBlock');
+    for (let i = 0; i < buildingBlocks.length; i++) {
+        let block = buildingBlocks[i];
+        let enhancementSelect = block.querySelector('.enhancementSelect');
+        let currentLevelInput = block.querySelector('.currentLevel input');
+        let targetLevelInput = block.querySelector('.targetLevel input');
+        let currentLevel = parseInt(currentLevelInput.value, 10);
+        let targetLevel = parseInt(targetLevelInput.value, 10);
+
+        var blockCosts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
+        var statsIncrease = {};
+        var individualStatsList = [];
+
+        let buildingSelect = block.querySelector('.buildingSelect');
+        let selectedBuilding = buildingSelect.value;
+
+        let isEnhancement4 = enhancementSelect.options[enhancementSelect.selectedIndex].text === "Enhancement 4";
+        
+        if (isEnhancement4) {
+            let enhancement4Price = enhancement4Prices.Special;
+            let enhancementData = build[selectedBuilding]["Enhancement 4"]; 
+
+            for (let j = currentLevel; j < targetLevel; j++) {
+                blockCosts.slate += enhancement4Price[j].Slate;
+                blockCosts.marble += enhancement4Price[j].Marble;
+                blockCosts.brick += enhancement4Price[j].Brick;
+                blockCosts.pine += enhancement4Price[j].Pine;
+                blockCosts.keystone += enhancement4Price[j].Keystone;
+                blockCosts.valyrianStone += enhancement4Price[j]["Valyrian Stone"] || 0;
+                blockCosts.limestone += enhancement4Price[j].Limestone;
+
+                let enhancements = enhancementData[j].Enhancements;
+                enhancements.forEach((enh) => {
+                    let type = enh.Type;
+                    let value = typeof enh.Value === 'string' ? parseFloat(enh.Value.replace('%', '')) : parseFloat(enh.Value);
+
+                    if (!statsIncrease[type]) {
+                        statsIncrease[type] = 0;
+                    }
+
+                    if (enhancementData[j + 1]) {
+                        let nextEnh = enhancementData[j + 1].Enhancements.find(e => e.Type === type);
+                        if (nextEnh) {
+                            let nextValue = typeof nextEnh.Value === 'string' ? parseFloat(nextEnh.Value.replace('%', '')) : parseFloat(nextEnh.Value);
+                            statsIncrease[type] += nextValue - value;
+                        }
+                    }
+                });
+            }
+
+            for (let type in statsIncrease) {
+                let statValue = statsIncrease[type];
+                if (statValue !== 0) {
+                    if (type === "Free Build Time") {
+                        let timeString = formatTime(statValue);
+                        individualStatsList.push(`${type}: ${timeString}`);
+                    } else {
+                        // Lisää prosenttimerkki vain, jos tyyppi ei kuulu nonPercentageTypes-listaan
+                        const statDisplay = nonPercentageTypes.includes(type)
+                            ? `${type}: ${statValue.toLocaleString('en-US')}`
+                            : `${type}: ${statValue.toFixed(2)}%`;
+                        individualStatsList.push(statDisplay);
+                    }
+                }
+            }
+
+            individualStatsList.forEach(stat => totalStatsList.push(stat));
+        } else {
+            let selectedPrice = price[enhancementSelect.value];
+
+            for (let j = currentLevel; j < targetLevel; j++) {
+                blockCosts.slate += selectedPrice[j].Slate;
+                blockCosts.marble += selectedPrice[j].Marble;
+                blockCosts.brick += selectedPrice[j].Brick;
+                blockCosts.pine += selectedPrice[j].Pine;
+                blockCosts.keystone += selectedPrice[j].Keystone;
+                blockCosts.valyrianStone += selectedPrice[j]["Valyrian Stone"] || 0;
+                blockCosts.limestone += selectedPrice[j].Limestone;
+            }
+
+            var stats = selectedPrice[targetLevel - 1].Value - (currentLevel > 0 ? selectedPrice[currentLevel - 1].Value : 0);
+            if (stats !== 0) {
+                let statText = `${enhancementSelect.options[enhancementSelect.selectedIndex].text}: ${stats.toFixed(2)}%`;
+                individualStatsList.push(statText);
+                totalStatsList.push(statText);
+            }
+        }
+
+        var blockDiscounts = { slate: 0, marble: 0, brick: 0, pine: 0, keystone: 0, valyrianStone: 0, limestone: 0 };
+
+        for (let key in blockCosts) {
+            let originalCost = blockCosts[key];
+            let discount = key === 'marble' ? parseFloat(document.querySelector('.aleMarble').value) || 0
+                        : key === 'keystone' ? parseFloat(document.querySelector('.aleKeystone').value) || 0
+                        : key === 'slate' ? parseFloat(document.querySelector('.aleSlate').value) || 0
+                        : 0;
+
+            let discountedCost = Math.round((100 / (discount + 100)) * originalCost);
+
+            blockDiscounts[key] = originalCost - discountedCost;
+            blockCosts[key] = discountedCost;
+
+            totalCosts[key] += discountedCost;
+            totalDiscounts[key] += blockDiscounts[key];
+        }
+
+        var enhancementText = enhancementSelect.options[enhancementSelect.selectedIndex].text;
+        var buildingText = block.querySelector('.buildingSelect').options[block.querySelector('.buildingSelect').selectedIndex].text;
+
+        var blockCostDiv = document.createElement('div');
+        blockCostDiv.classList.add('costBox');
+        blockCostDiv.innerHTML = `
+            <h4>${buildingText} - ${enhancementText}</h4>
+            <p class="level">Level ${currentLevel} to ${targetLevel}</p>
+        `;
+
+        if (individualStatsList.length > 1) {
+            blockCostDiv.innerHTML += `<p class="stats">Stats increase:</p><div class="stats">${individualStatsList.map(stat => `<p>${stat}</p>`).join('')}</div>`;
+        } else if (individualStatsList.length === 1) {
+            blockCostDiv.innerHTML += `<p class="stats">Stats increase: ${individualStatsList[0]}</p>`;
+        }
+
+        resourceOrder.forEach(key => {
+            if (blockCosts[key] > 0) {
+                const efficiencyClass = blockDiscounts[key] > 0 ? 'efficiency' : '';
+                blockCostDiv.innerHTML += `
+                    <div class="resources ${efficiencyClass}">
+                        <img src="${resourceIcons[key]}" alt="${key} icon">
+                        <p>${numberFormatter.format(blockCosts[key])}</p>
+                    </div>
+                `;
+            }
+        });
+
+        costSummaryElement.appendChild(blockCostDiv);
+    }
+
+    if (buildingBlocks.length > 1) {
+        var totalCostDiv = document.createElement('div');
+        totalCostDiv.classList.add('totalCosts');
+        var statsListHtml = totalStatsList.map(stat => `<p class="stats">${stat}</p>`).join('');
+        totalCostDiv.innerHTML = `
+            <h3>Costs in total:</h3>
+            ${statsListHtml}
+        `;
+
+        resourceOrder.forEach(key => {
+            if (totalCosts[key] > 0) {
+                const efficiencyClass = totalDiscounts[key] > 0 ? 'efficiency' : '';
+                totalCostDiv.innerHTML += `
+                    <div class="resources ${efficiencyClass}">
+                        <img src="${resourceIcons[key]}" alt="${key} icon">
+                        <p>${numberFormatter.format(totalCosts[key])}</p>
+                    </div>
+                `;
+            }
+        });
+        costSummaryElement.appendChild(totalCostDiv);
+    }
+
+    if (!document.getElementById('closeResults')) {
+        let closeButton = document.createElement('button');
+        closeButton.id = 'closeResults';
+        
+        closeButton.innerHTML = `
+            <span>Click here to go back and modify your selections</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
+                <path d="M345 137c9.4-9.4 9.4-24.6 0-33.9s-24.6-9.4-33.9 0l-119 119L73 103c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l119 119L39 375c-9.4-9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l119-119L311 409c9.4-9.4 24.6-9.4 33.9 0s9.4-24.6 0-33.9l-119-119L345 137z"></path>
+            </svg>`;
+        
+        closeButton.addEventListener('click', function() {
+            wrapperElement.style.display = 'block';
+            costSummaryElement.style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        costSummaryElement.prepend(closeButton);
+    }
+
+    wrapperElement.style.display = 'none';
+    costSummaryElement.style.display = 'flex';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
 
 
 // Funktio sekuntien muuntamiseen tunneiksi, minuuteiksi ja sekunneiksi
