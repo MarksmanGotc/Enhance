@@ -431,7 +431,7 @@ footer svg {
 }
 
 .totalCosts .efficiency p, .costBox .efficiency p {
-    color: #4caf50;
+    color: #4caf50 !important;
 }
 
 @media (max-width: 600px) {
